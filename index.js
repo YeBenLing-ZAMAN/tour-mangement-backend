@@ -7,8 +7,9 @@ const connectDB = require("./DB/Config");
 
 /* get all routers */
 const publicRoutes = require("./routes/publicRoutes/index");
-const secureRoutes = require("./routes/secureRoutes/index");
-const privateRoutes = require("./routes/privateRoutes/index");
+const tourRoutes = require("./routes/tourRoutes/index");
+// const secureRoutes = require("./routes/secureRoutes/index");
+// const privateRoutes = require("./routes/privateRoutes/index");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 
@@ -27,8 +28,9 @@ connectDB();
 
 /* link router  */
 app.use("/public/api", publicRoutes);
-app.use("/secure/api", secureRoutes);
-app.use("/private/api", privateRoutes);
+// app.use("/secure/api", secureRoutes);
+// app.use("/private/api", privateRoutes);
+app.use("/v1/api/tour", tourRoutes);
 
 // base API
 app.get("/", (req, res) => {
