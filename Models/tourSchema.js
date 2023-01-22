@@ -102,6 +102,10 @@ const tourSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  viewCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Tour = mongoose.model("TOUR", tourSchema);

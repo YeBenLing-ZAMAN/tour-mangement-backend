@@ -6,6 +6,9 @@ const {
   bulkUpdateTourService,
   deleteTourService,
   bulkdeleteTourService,
+  detailsTourService,
+  cheapestTourService,
+  trendingTourService,
 } = require("../../services/tour.services");
 
 const createTour = async (req, res) => {
@@ -26,7 +29,48 @@ const createTour = async (req, res) => {
 
 const getTour = async (req, res) => {
   try {
-    const result = await getTourService();
+    let filters = { ...req.query };
+    const excludeFields = ["sort", "page", "limit", "fields"];
+    excludeFields.forEach((field) => delete filters[field]); // how to delete fields form Object
+    // console.log(filters);
+
+    /* sort handle */
+    const queries = {};
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      queries.sortBy = sortBy;
+    }
+
+    /*  */
+    if (req.query.fields) {
+      const fieldsBy = req.query.fields.split(",").join(" ");
+      queries.fieldsBy = fieldsBy;
+    }
+
+    /* gt, lt, gte, lte */
+    let filterString = JSON.stringify(filters);
+    filterString = filterString.replace(
+      /\b(gt|gte|lt|lte)\b/g,
+      (match) => `$${match}`
+    );
+    filters = JSON.parse(filterString);
+
+    /* pagination */
+    // 50 tour
+    // page 1=> 1-10
+    // page 2=> 11-20
+    // page 3=> 21-30
+    // page 4=> 31-40
+    // page 5=> 41-50
+
+    if (req.query.page) {
+      const { page = 1, limit = 10 } = req.query;
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = parseInt(limit);
+    }
+
+    const result = await getTourService(filters, queries);
 
     res.status(200).json({
       status: "success",
@@ -61,6 +105,62 @@ const updateTour = async (req, res) => {
     res
       .status(400)
       .json({ status: "failed", message: "data is not inserted", error: err });
+  }
+};
+
+const detailsTour = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await detailsTourService(id);
+    res.status(200).json({
+      status: "success",
+      message: "tour details found successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: "tour details not found",
+      error: err,
+    });
+  }
+};
+
+const cheapestTour = async (req, res) => {
+  try {
+    const result = await cheapestTourService();
+    res.status(200).json({
+      status: "success",
+      message: "cheapest tour details found successfully",
+      data: result,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({
+        status: "failed",
+        message: "cheapest tour details not found",
+        error: err,
+      });
+  }
+};
+
+const trendingTour = async (req, res) => {
+  try {
+    const result = await trendingTourService();
+    res.status(200).json({
+      status: "success",
+      message: "trending tour details found successfully",
+      data: result,
+    });
+  } catch (err) {
+    res
+      .status(400)
+      .json({
+        status: "failed",
+        message: "trending tour details not found",
+        error: err,
+      });
   }
 };
 
@@ -131,4 +231,7 @@ module.exports = {
   bulkUpdateTour,
   tourDelete,
   bulkDeleteTour,
+  detailsTour,
+  cheapestTour,
+  trendingTour,
 };
