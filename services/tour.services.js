@@ -75,3 +75,13 @@ exports.bulkUpdateTourService = async (data) => {
   console.log(result);
   return result;
 };
+
+exports.deleteTourService = async (productID) => {
+  const result = await Tour.deleteOne({ _id: productID });
+  return result;
+};
+
+exports.bulkdeleteTourService = async (ids) => {
+  const result = await Tour.deleteMany({ _id: ids });
+  return result;
+};
