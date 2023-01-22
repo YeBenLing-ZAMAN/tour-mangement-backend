@@ -116,7 +116,6 @@ exports.bulkdeleteTourService = async (ids) => {
 };
 
 exports.detailsTourService = async (tourID) => {
-  // const updated = await Tour.findOneAndUpdate({_id: tourID}, {$inc : {'viewCount' : 1}});
   const result = await Tour.findOne({ _id: tourID });
   if (result) {
     result.viewCount += 1;
