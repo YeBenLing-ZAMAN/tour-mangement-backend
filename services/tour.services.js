@@ -48,26 +48,28 @@ exports.addTourService = async (data) => {
   return result;
 };
 
-/* 
 // how to save script
 
+/* 
 exports.addTourService = async (data) => {
   const tours = [];
   for (let i = 0; i < 50; i++) {
     tours.push(
       new Tour({
         name: `fake tour ${i}`,
-        duration: 2 + i,
-        maxGroupSize: 70 - i,
+        duration: Math.floor(Math.random() * (20 - 4) + 4) ,
+        maxGroupSize: Math.floor(Math.random() * (40 - 12) + 12),
         difficulty: "easy",
-        price: 2000 * i + 3,
+        price: 60 * Math.floor(Math.random() * (20 - 5) + 4),
         summary: "make a greate feeling",
+        ratingsQuantity:Math.floor(Math.random() * (30 - 3) + 3),
         description:
         "who supervised the settlement there of Arakanese refugees from conquest by Myanmar (Burma) in 1799.",
         startDates: "20 jan 2023",
+        status: i % 2 == 0 ? "hold" : "running",
         startLocation: "kosba",
         locations: {
-          coordinates: 7987094245 + i,
+          coordinates: 7987094245 + Math.floor(Math.random() * (20 - 5) + 4),
           address: "notor",
           description: "ghora-ghori",
           day: 5 + i,
@@ -79,7 +81,7 @@ exports.addTourService = async (data) => {
     
     return result;
   };
-*/
+  */
 
 exports.updateTourService = async (productID, data) => {
   const result = await Tour.updateOne(
@@ -115,6 +117,6 @@ exports.deleteTourService = async (productID) => {
 };
 
 exports.bulkdeleteTourService = async (ids) => {
-  const result = await Tour.deleteMany({ _id: ids });
+  const result = await Tour.deleteMany({});
   return result;
 };
