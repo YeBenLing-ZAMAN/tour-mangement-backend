@@ -48,6 +48,39 @@ exports.addTourService = async (data) => {
   return result;
 };
 
+/* 
+// how to save script
+
+exports.addTourService = async (data) => {
+  const tours = [];
+  for (let i = 0; i < 50; i++) {
+    tours.push(
+      new Tour({
+        name: `fake tour ${i}`,
+        duration: 2 + i,
+        maxGroupSize: 70 - i,
+        difficulty: "easy",
+        price: 2000 * i + 3,
+        summary: "make a greate feeling",
+        description:
+        "who supervised the settlement there of Arakanese refugees from conquest by Myanmar (Burma) in 1799.",
+        startDates: "20 jan 2023",
+        startLocation: "kosba",
+        locations: {
+          coordinates: 7987094245 + i,
+          address: "notor",
+          description: "ghora-ghori",
+          day: 5 + i,
+        },
+      }).save()
+      );
+    }
+    const result = await Promise.all(tours);
+    
+    return result;
+  };
+*/
+
 exports.updateTourService = async (productID, data) => {
   const result = await Tour.updateOne(
     { _id: productID },
